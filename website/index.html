@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>METANOSENS</title>
+
+  <!-- فونت فارسی از CDN -->
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+  <style>
+    .image-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%; /* یا مقدار دلخواه */
+    width: 250px; /* عرض تصویر */
+    object-fit: cover;
+    border-top-right-radius: 60px;
+    border-bottom-right-radius: 60px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  @media (max-width: 768px) {
+
+  /* تصویر بیاید بالا و به حالت عادی */
+  .image-box img {
+    position: static;   /* لغو absolute */
+    width: 100%;        /* تصویر تمام عرض */
+    height: auto;       /* ارتفاع طبیعی */
+    border-radius: 20px; /* ریسپانسیو و مرتب */
+  }
+
+  /* چیدمان سکشن نیز عمودی شود */
+  #drilling {
+    display: block !important;
+  }
+
+  .image-box {
+    width: 100%;
+  }
+}
+
+    /* =========================
+       CSS VARIABLES: PALETTE
+       ========================= */
+    :root{
+      --bg: #f6f7fb;
+      --surface: #ffffff;
+      --muted: #8a8fa3;
+      --accent: #0ea5a4;
+      --accent-2: #7c3aed;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --glass: rgba(255,255,255,0.6);
+      --card-shadow: 0 6px 18px rgba(20,20,50,0.08);
+      --radius: 14px;
+      --max-width: 1200px;
+      --text: #0f1724;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg: #071023;
+        --surface: #081226;
+        --muted: #9aa3b2;
+        --accent: #19b9b6;
+        --accent-2: #9b5cff;
+        --danger: #ff6b6b;
+        --warn: #f7b955;
+        --glass: rgba(255,255,255,0.04);
+        --card-shadow: 0 10px 30px rgba(2,6,23,0.7);
+        --text: #e6eef8;
+      }
+    }
+
+    /* =========================
+       BASE
+       ========================= */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 92%, black 8%));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      -webkit-tap-highlight-color: transparent;
+      scroll-behavior:smooth;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* =========================
+       LAYOUT
+       ========================= */
+    .container{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding:24px;
+    }
+    header.site-header{
+      position:sticky;
+      top:0;
+      z-index:60;
+      backdrop-filter: blur(6px);
+      background:linear-gradient(180deg,var(--glass),transparent);
+      border-bottom:1px solid rgba(0,0,0,0.04);
+    }
+    .header-inner{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:12px 24px;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      overflow:hidden;
+      flex:0 0 56px;
+      box-shadow: var(--card-shadow);
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    .brand h1{
+      font-size:18px;
+      margin:0;
+      letter-spacing:0.6px;
+    }
+    .slogan{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    nav.top-nav{display:flex;gap:12px;align-items:center}
+    nav.top-nav a{
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      background:transparent;
+    }
+    .cta{
+      padding:10px 14px;
+      background:linear-gradient(90deg,var(--accent-2),var(--accent));
+      color:white;
+      border-radius:10px;
+      box-shadow: 0 6px 18px rgba(12,12,40,0.18);
+    }
+
+    /* =========================
+       HERO / SLIDESHOW
+       ========================= */
+    /* بخش یک: هِرو و اسلایدشو */
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:18px;
+      margin:18px 0;
+      box-shadow:var(--card-shadow);
+    }
+    .slides{
+      display:grid;
+      grid-template-columns: repeat(4, 100%);
+      transition: transform 900ms cubic-bezier(.22,.9,.32,1);
+      will-change: transform;
+       /* ensure CSS flow is RTL for animation */
+    }
+    .slide{
+      position:relative;
+      min-height:360px;
+      display:flex;
+      align-items:center;
+      padding:28px;
+      gap:20px;
+      color:var(--text);
+    }
+    .slide .media{
+      flex:1 1 50%;
+      min-height:260px;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:inherit;
+    }
+    .slide .media img{width:100%;height:100%;object-fit:cover;display:block}
+    .slide .content{
+      flex:1 1 50%;
+      padding:12px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .slide h2{margin:0;font-size:28px}
+    .slide p{margin:0;color:var(--muted)}
+    .slide .btns{display:flex;gap:12px;margin-top:8px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      user-select:none;
+      border: none;
+      font-weight:600;
+    }
+    .btn-outline{
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+      color:var(--text);
+    }
+    .btn-primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;
+      box-shadow:0 8px 20px rgba(12,12,40,0.12);
+    }
+
+    /* controls */
+    .slide-controls{
+      position:absolute;
+      inset-inline:12px;
+      bottom:12px;
+      display:flex;
+      justify-content:space-between;
+      width:calc(100% - 24px);
+      align-items:center;
+      pointer-events:none;
+    }
+    .dots{display:flex;gap:8px;pointer-events:auto}
+    .dot{
+      width:12px;height:12px;border-radius:999px;
+      background:rgba(255,255,255,0.6);
+      border:2px solid rgba(0,0,0,0.06);
+      cursor:pointer;
+    }
+    .dot.active{transform:scale(1.25);box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+    .nav-arrows{display:flex;gap:8px;pointer-events:auto}
+    .arrow{
+      width:44px;height:44px;border-radius:10px;
+      display:inline-grid;place-items:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.1), rgba(0,0,0,0.1)); border:1px solid rgba(255,255,255,0.08);
+      cursor:pointer;
+      border:none;
+    }
+
+    /* =========================
+       MAIN SECTIONS
+       ========================= */
+    main{padding:24px 0}
+    section.card{
+      background:var(--surface);
+      border-radius:12px;
+      padding:20px;
+      margin:18px 0;
+      box-shadow:var(--card-shadow);
+    }
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      align-items:start;
+    }
+    h3{margin-top:0}
+    ul.features{padding-inline-start:1.2rem;margin:0}
+    .muted{color:var(--muted)}
+
+    /* =========================
+       INTRO ANIMATION FOR SECTION THREE
+       ========================= */
+    .intro-anim{
+      opacity:0;
+      transform: translateY(20px);
+      transition:opacity 700ms ease, transform 700ms cubic-bezier(.2,.9,.3,1);
+    }
+    .intro-anim.visible{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* =========================
+       ACCORDION (FAQ)
+       ========================= */
+    /* بخش آکوردئون: سؤالات متداول */
+    .accordion{display:flex;flex-direction:column;gap:10px}
+    .acc-item{
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,0.06);
+      background:linear-gradient(180deg,var(--surface),transparent);
+    }
+    .acc-header{
+      padding:14px 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    .acc-body{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 420ms cubic-bezier(.2,.9,.3,1), padding 300ms;
+      padding:0 16px;
+    }
+    .acc-body.open{padding:12px 16px;max-height:280px}
+
+    /* =========================
+       CONTACT / FOOTER
+       ========================= */
+    footer.site-footer{
+      margin-top:28px;
+      padding:24px 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .contact-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    /* =========================
+       BACK TO TOP BUTTON (MOBILE)
+       ========================= */
+    #backToTop{
+      position:fixed;
+      bottom:18px;
+      left:18px; /* left because dir=rtl, visually bottom-left corner */
+      z-index:80;
+      width:56px;height:56px;border-radius:999px;
+      display:grid;place-items:center;
+      background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      color:white;
+      box-shadow:0 10px 30px rgba(12,12,40,0.2);
+      opacity:0;
+      transform:translateY(14px) scale(.95);
+      transition:opacity 280ms, transform 280ms;
+      border:none;
+      cursor:pointer;
+    }
+    #backToTop.show{opacity:1;transform:translateY(0) scale(1)}
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+    @media (max-width:767px){
+      .header-inner{padding:10px}
+      .slide{min-height:260px;flex-direction:column}
+      .slide .media{width:100%;min-height:160px}
+      .slide .content{width:100%}
+      .grid-2{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+      nav.top-nav{display:none}
+      .logo{width:48px;height:48px}
+      .brand h1{font-size:16px}
+      .slide-controls{bottom:8px}
+    }
+    @media (min-width:768px){
+      .hero{min-height:420px}
+      .slides{grid-auto-flow:column}
+    }
+
+    /* small utilities */
+    .kicker{font-weight:700;color:var(--accent-2);font-size:12px}
+    .lead{font-size:15px}
+    .small{font-size:13px;color:var(--muted)}
+    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(0,0,0,0.03), transparent);font-weight:700}
+  </style>
+</head>
+<body>
+
+  <!-- بخش هدر: نِویگیشن و لوگو -->
+  <header class="site-header" role="banner" aria-label="سربرگ سایت">
+    <div class="container header-inner">
+      <div class="brand" aria-hidden="false">
+        <div class="logo" aria-hidden="true"><img src="logo.png" alt="لوگو METANOSENS" /></div>
+        <div>
+          <h1>METANOSENS</h1>
+          <div class="slogan">WE SAVE LIVES</div>
+        </div>
+      </div>
+
+      <nav class="top-nav" role="navigation" aria-label="منوی اصلی">
+        <a href="#product" class="small" id="nav-product">معرفی محصول</a>
+        <a href="#mines" class="small">معادن ذغال سنگ</a>
+        <a href="#drilling" class="small">حفاری و استخراج</a>
+        <a href="#refineries" class="small">پالایشگاه‌ها و سردخانه‌ها</a>
+        <a href="#contact" class="cta">تماس با ما</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- بخش یک: هِرو و اسلایدشو -->
+      <section class="hero" aria-labelledby="hero-heading" role="region">
+        <div style="position:absolute;inset:0;z-index:0;filter:blur(30px);opacity:.06;background:linear-gradient(90deg,var(--accent),var(--accent-2));pointer-events:none"></div>
+
+        <!-- slides wrapper (rtl slide direction implemented via transform) -->
+        <div id="slidesWrapper" class="slides" aria-live="polite">
+                    
+          
+          
+          <article class="slide" role="group" aria-roledescription="slide" aria-label="حفاری و استخراج نفت و گاز">
+            <div class="media"><img src="gas.jpg" alt="حفاری و استخراج نفت و گاز - تصویر" /></div>
+            <div class="content">
+              <div class="kicker">صنعت حفاری و استخراج نفت و گاز</div>
+              <h2>حفاری نفت و گاز</h2>
+              <p class="lead">در حفاری هر تاخیر یعنی میلیون‌ها دلار؛ هر نشت یعنی فاجعه</p>
+              <div class="btns">
+                <button class="btn btn-primary" data-scroll="#drilling" aria-controls="drilling">اطلاعات بیشتر</button>
+                <button class="btn btn-outline" onclick="alert('دریافت گزارش')">گزارش</button>
+              </div>
+            </div>
+          </article>
+          
+          <!-- slide 1 -->
+          <article class="slide" role="group" aria-roledescription="slide" aria-label="معادن ذغال سنگ">
+            <div class="media"><img src="first.jpg" alt="معادن ذغال سنگ - تصویر" /></div>
+            <div class="content">
+              <div class="kicker">معادن ذغال سنگ</div>
+              <h2>معادن ذغال سنگ</h2>
+              <p class="lead">استخراج ذغال سنگ نباید به قیمت جان انسان ها باشد</p>
+              <p class="small">متانو سنس با دقت نانویی، نشت گاز را خیلی پیش از فاجعه تشخیص می‌دهد</p>
+              <div class="btns">
+                <button class="btn btn-primary" data-scroll="#mines" aria-controls="mines">اطلاعات بیشتر</button>
+                <button class="btn btn-outline" onclick="alert('اشتراک‌گذاری')">اشتراک‌گذاری</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- slide 2 -->
+
+
+          <!-- slide 3 -->
+          <article class="slide" role="group" aria-roledescription="slide" aria-label="پالایشگاه‌ها و سردخانه‌های دارویی">
+            <div class="media"><img src="pru2.png" alt="پالایشگاه‌ها و سردخانه‌های دارویی - تصویر" /></div>
+            <div class="content">
+              <div class="kicker">مسیر توسعه</div>
+              <h2>متانوسنس V2.0</h2>
+              <p class="lead">محیط کنترل شده بدون حسگر هوشمند فقط خیال است</p>
+              <p class="small">متانوسنس تضمین امنیت ترکیبات فرار، در محیط‌های صنعتی حساس</p>
+              <div class="btns">
+                <button class="btn btn-primary" data-scroll="#refineries" aria-controls="refineries">اطلاعات بیشتر</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- slide 4 -->
+          <article class="slide" role="group" aria-roledescription="slide" aria-label="متانو سنس چیست">
+            <div class="media"><img src="pru.jpg" alt="متانو سنس چیست - تصویر" /></div>
+            <div class="content">
+              <div class="kicker">معرفی محصول</div>
+              <h2>متانو سنس چیست</h2>
+              <p class="lead">برای آشنایی کامل با متانوسنس به بخش معرفی محصول بروید</p>
+              <div class="btns">
+                <button class="btn btn-primary" data-scroll="#product" aria-controls="product">معرفی محصول</button>
+                <button class="btn btn-outline" onclick="alert('دانلود برگه محصول')">دانلود</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- controls -->
+        <div class="slide-controls" aria-hidden="false">
+          <div class="nav-arrows">
+            <button class="arrow" id="nextSlide" aria-label="اسلاید بعدی" title="بعدی">&rarr;</button>
+            <button class="arrow" id="prevSlide" aria-label="اسلاید قبلی" title="قبلی">&larr;</button>
+          
+          </div>
+          <div class="dots" id="dots" role="tablist" aria-label="ناوبری اسلایدها"></div>
+        </div>
+      </section>
+
+      <!-- بخش دو: معادن ذغال سنگ -->
+      <section id="mines" class="card" aria-labelledby="mines-heading" role="region">
+        <h3 id="mines-heading">معادن ذغال سنگ</h3>
+        <p>استخراج ذغال سنگ نباید به قیمت جان انسان ها باشد. متانو سنس با دقت نانویی، نشت گاز را خیلی پیش از فاجعه تشخیص می‌دهد.</p>
+
+        <div class="grid-2">
+          <div>
+            <h4>نکات فنی</h4>
+            <ul class="features">
+              <li>اندازه‌گیری غلظت متان در مقادیر 200 و 2000 <strong>ppm</strong></li>
+              <li>تغییر رنگ از خاکستری به زرد و قرمز در صورت مواجه با متان</li>
+              <li>سازگار با استانداردهای ایمنی و <strong>ATEX</strong> برای مناطق انفجاری</li>
+            </ul>
+          </div>
+          <div>
+            <h4>چرا متانوسنس؟</h4>
+            <p class="muted">حسگری که پیش از وقوع فاجعه هشدار می‌دهد و زمان کافی برای تخلیه و کنترل فراهم می‌سازد.</p>
+            <p class="small">نصب ساده، نیاز انرژی کم، و ارتباط بلوتوث/وای‌فای برای انتقال داده‌ها.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- بخش سه: حفاری و استخراج -->
+      <section id="drilling" class="card intro-anim" aria-labelledby="drilling-heading" role="region">
+      <div class="image-box">
+        <img src="drilling.jpg">
+      </div>
+        <h3 id="drilling-heading">صنعت حفاری و استخراج نفت و گاز</h3>
+        <p>در حفاری هر تاخیر یعنی میلیون‌ها دلار؛ هر نشت یعنی فاجعه.</p>
+
+        <h4>نکات فنی</h4>
+        <ul class="features">
+          <li>پایش مداوم گازهای قابل اشتعال و VOCs</li>
+          <li>تغییر رنگ از خاکستری به زرد و قرمز در صورت مواجه با متان</li>
+          <li>سازگاری با استانداردهای منطقه‌ای و بین‌المللی ATEX و IECEx</li>
+        </ul>
+      </section>
+
+      <!-- بخش چهار: پالایشگاه‌ها و سردخانه‌ها -->
+      <section id="refineries" class="card" aria-labelledby="refineries-heading" role="region">
+        <h3 id="refineries-heading">پالایشگاه‌ها و سردخانه‌های دارویی</h3>
+        <p>محیط کنترل شده بدون حسگر هوشمند فقط خیال است. متانوسنس تضمین امنیت ترکیبات فرار،<br> در محیط‌های صنعتی حساس.</p>
+
+        <h4>خلاصه نکات فنی</h4>
+        <ul class="features">
+          <li>شناسایی متان حاصله از میوه در سردخانه های کشاورزی و غذایی</li>
+          <li> مورد استفاده در کانتینر های حمل میوه و سبزیجات جهت شناسیی متان</li>
+          <li>قابلیت کار در دماها و شرایط محیطی سخت</li>
+        </ul>
+        
+      </section>
+
+      <!-- بخش پنج: معرفی محصول (متانو سنس چیست) -->
+      <section id="product" class="card" aria-labelledby="product-heading" role="region">
+        <h3 id="product-heading">متانو سنس چیست</h3>
+
+        <!-- توضیحات کلی -->
+        <div class="muted small">متانوسنس (METANOSENS) یک راه‌حل حسگری پیشرفته جهت شناسایی زودهنگام نشت گاز متان است.</div>
+
+        <!-- بخش‌بندی: توضیحات زرد/قرمز و ویژگی‌ها و مکانیسم دوگانه -->
+        <div style="display:grid;gap:14px;margin-top:12px">
+          <!-- yellow info -->
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(245,158,11,0.08), transparent);border:1px solid rgba(245,158,11,0.12)">
+            <strong>هشدار (زرد):</strong>
+            <p class="small">زمانی که نشت تازه صورت گرفته و غلظت گاز متان به اندازه 200 PPM رسیده است</p>
+          </div>
+
+          <!-- red info -->
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(239,68,68,0.06), transparent);border:1px solid rgba(239,68,68,0.12)">
+            <strong>هشدار (قرمز):</strong>
+            <p class="small">زمانی که غلظت گاز به میزان 2000 PPM رسیده است و هنوز خیلی تا رسیدن به حد پایین اشتعال فاصله دارد</p>
+          </div>
+
+          <!-- ویژگی‌ها -->
+          <div>
+            <h4>ویژگی‌ها</h4>
+            <ul class="features">
+              <li>حسگری با حساسیت نانویی برای تشخیص قبل از رسیدن سطح به LEL</li>
+              <li>هشدار بصری محیطی در سطح کارگر</li>
+              <li>تغییر رنگ  از خاکستری به زرد فلورسنت و قرمز فلورسنتی در صورت مواجهه</li>
+              <li>لایه محافظ نانو پلیمر گزینشگر برای عبور انتخوابی مولوکول های متان </li>
+              <li>پایدار در محیط‌های سخت و دارای استانداردهای حفاظتی IP</li>
+              <li>بدون نیاز به مصرف انرژی و کاملا پسیو</li>
+
+            </ul>
+          </div>
+
+          <!-- کاربردها -->
+          <div>
+            <h4>کاربردهای پیشنهادی</h4>
+            <ul class="features">
+              <li>معادن ذغال سنگ و تونل‌ها</li>
+              <li>سکوهای نفتی و روندهای حفاری</li>
+              <li>پالایشگاه‌ها و سردخانه‌های دارویی</li>
+              <li>کارخانه‌ها و زیست‌محیط‌های صنعتی حساس</li>
+              <li>تصفیه خانه</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+        <!-- next v2-->
+         <section id="product" class="card" aria-labelledby="product-heading" role="region">
+        <h3 id="product-heading">معرفی متانوسنس ۲ (نسخه هوشمند)</h3>
+
+        <!-- توضیحات کلی -->
+        <div class="muted small">ترکیب قدرت پسیو با دقت دیجیتال.
+متانوسنس ۲ ماژول اندازه‌گیری تغییر مقاومت، مبدل سیگنال، چراغ چشمک‌زن و بیزر را دارد و ثبت و انتقال داده را ممکن می‌سازد..</div>
+
+        <!-- بخش‌بندی: توضیحات زرد/قرمز و ویژگی‌ها و مکانیسم دوگانه -->
+        <div style="display:grid;gap:14px;margin-top:12px">
+          <!-- yellow info -->
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(255, 0, 0, 0.08), transparent);border:1px solid rgba(245,158,11,0.12)">
+            <strong>هشدار بصری (LED چشمک زن):</strong>
+            <p class="small">پس از مواجه با متان، چراغ LED شروع به چشمک زدن خواهد کرد</p>
+          </div>
+
+          <!-- red info -->
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(1, 255, 255, 0.06), transparent);border:1px solid rgba(239,68,68,0.12)">
+            <strong>هشدار صوتی (صدای آلارم):</strong>
+            <p class="small">پس از مواجه با متان، بوق به صدا در می آید</p>
+          </div>
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(252, 0, 218, 0.06), transparent);border:1px solid rgba(239,68,68,0.12)">
+            <strong>ارسال داده:</strong>
+            <p class="small">پس از مواجه سنسور با متان ، داده ای توسط ماژول BLE ارسال خواهد شد که توسط  leak feeder و Wi-gate به سرور انتقال پیدا میکند</p>
+          </div>
+
+          <!-- ویژگی‌ها -->
+          <div>
+            <h4> ضرورت ارسال داده</h4>
+            <p>هر ثانیه داده، یک قدم دورتر از انفجار.
+ثبت و ارسال دادهٔ آنی برای تحلیل روند، مدل‌سازی انتشار و تصمیم‌گیری فوری در سطوح عملیاتی و مدیریتی ضروری است</p>
+          </div>
+
+          <!-- کاربردها -->
+          <div>
+            <h4>نحوهٔ ارسال داده و زیرساخت ارتباطی</h4>
+            <p>از پچ تا داشبورد، مسیر کامل ایمنی.
+متانوسنس ۲ داده‌ها را از طریق BLE یا LoRa به گیت‌وی معدن می‌فرستد؛ گیت‌وی به سرور Leak-Reader منتقل می‌کند و ویجت‌ها/نقشه‌ها وضعیت را لحظه‌ای نمایش می‌دهند</p>
+          </div>
+        </div>
+      </section>
+      <!-- بخش شش: سوالات متداول (آکوردئون) -->
+      <section id="faq" class="card" aria-labelledby="faq-heading" role="region">
+        <h3 id="faq-heading">سؤالات متداول</h3>
+
+        <div class="accordion" id="accordion" role="tablist" aria-label="سؤالات متداول">
+          <!-- acc 1 -->
+          <div class="acc-item">
+            <div class="acc-header" role="tab" id="acc1-header" aria-controls="acc1-body" aria-expanded="false" tabindex="0">
+              <div>پچ متانوسنس چگونه کار می‌کند؟</div>
+              <div aria-hidden="true">+</div>
+            </div>
+            <div id="acc1-body" class="acc-body" role="region" aria-labelledby="acc1-header">
+              <p>پچ بر پایه‌ی نانو‌مواد حساس به گاز متان ساخته شده است. هر لایه با رسیدن به یک محدوده مشخص از غلظت متان، تغییر رنگ مرحله‌ای ایجاد می‌کند. این تغییر رنگ بدون برق، بدون باتری و در دمای محیط انجام می‌شود و امکان تشخیص سریع نشت گاز را فراهم می‌کند</p>
+            </div>
+          </div>
+
+          <!-- acc 2 -->
+           <div class="acc-item">
+            <div class="acc-header" role="tab" id="acc2-header" aria-controls="acc2-body" aria-expanded="false" tabindex="0">
+              <div> آیا پچ نیاز به کالیبراسیون یا تنظیم دارد؟</div>
+              <div aria-hidden="true">+</div>
+            </div>
+            <div id="acc2-body" class="acc-body" role="region" aria-labelledby="acc2-header">
+              <p>خیر. پچ یک حسگر یک‌بارمصرف و کالیبره‌ شده در کارخانه است و پس از نصب روی کلاه یا لباس حفار، بدون نیاز به هیچ تنظیمی کار می‌کند</p>
+            </div>
+          </div>
+
+          <!-- acc 3 -->
+           <div class="acc-item">
+            <div class="acc-header" role="tab" id="acc3-header" aria-controls="acc3-body" aria-expanded="false" tabindex="0">
+              <div>پچ در چه شرایطی قابل استفاده است؟</div>
+              <div aria-hidden="true">+</div>
+            </div>
+            <div id="acc3-body" class="acc-body" role="region" aria-labelledby="acc3-header">
+              <p>پچ برای محیط‌های معدن زغال‌سنگ، تونل‌ها و فضاهای بسته با احتمال نشت متان طراحی شده است. در برابر رطوبت نسبی تا ۸۰٪ و دمای ۰ تا ۴۵ درجه سانتی‌گراد پایدار است و دقت هشدار دهی خود را حفظ می‌کند</p>
+            </div>
+          </div>
+
+          <!--acc4-->
+                    <div class="acc-item">
+            <div class="acc-header" role="tab" id="acc4-header" aria-controls="acc4-body" aria-expanded="false" tabindex="0">
+              <div> آیا پچ متانوسنس جایگزین سنسورهای الکترونیکی می‌شود؟</div>
+              <div aria-hidden="true">+</div>
+            </div>
+            <div id="acc4-body" class="acc-body" role="region" aria-labelledby="acc4-header">
+              <p>پچ جایگزین کامل نیست؛ بلکه لایه دفاعی اول برای هشدار سریع است. سنسورهای الکترونیکی باید همچنان در سیستم ایمنی باقی بمانند، اما پچ متانوسنس کمک می‌کند نشت‌های نقطه‌ای و ناگهانی خیلی سریع‌تر دیده شوند</p>
+            </div>
+          </div>
+          <!--acc5-->
+                    <div class="acc-item">
+            <div class="acc-header" role="tab" id="acc5-header" aria-controls="acc5-body" aria-expanded="false" tabindex="0">
+              <div>عمر مفید پچ چقدر است؟</div>
+              <div aria-hidden="true">+</div>
+            </div>
+            <div id="acc5-body" class="acc-body" role="region" aria-labelledby="acc5-header">
+              <p>هر پچ از زمان باز شدن بسته‌بندی تا ۳۰ روز در محیط کاربری قابل‌اعتماد است. اگر هر یک از لایه‌ها تغییر رنگ دهد، باید همان لحظه پچ تعویض و محل کار بررسی ایمنی شود</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- بخش هفت: تماس با ما و حقوق -->
+      <footer id="contact" class="card site-footer" role="contentinfo" aria-labelledby="contact-heading">
+        <h3 id="contact-heading">تماس با ما</h3>
+        <div class="contact-grid">
+          <div>
+            <h4>آدرس دفتر : پردیس پژوهش دانشگاه کار ، شهر صنعتی البرز ، دانشگاه کار</h4>
+            <p>ایران،قزوین — دفتر مرکزی METANOSENS</p>
+            <h4>اطلاعات تماس</h4>
+            <p>تلفن :  </p> <a href="tell:+989991210107">0999-1210-107</a>
+
+            <p>ایمیل:</p><a href="mailto:metanosense@gmail.com"> metanosense@gmail.com </a>
+          </div>
+          <div>
+            <h4>مالکیت سایت</h4>
+            <p>تمامی حقوق متعلق به METANOSENS می‌باشد.</p>
+            <p class="small">استفاده از اطلاعات وب‌سایت منوط به شرایط و قوانین شرکت است.</p>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Back to top button (mobile visibility controlled via JS) -->
+  <!-- button id="backToTop" aria-label="بازگشت به بالا" title="بازگشت به بالا" onclick="scrollToTop()">↑</button-->
+
+  <script>
+    /* =========================
+       اسکریپت‌ها: اسلایدشو، آکوردئون، scroll-to، intro anim و back-to-top
+       ========================= */
+
+    (function(){
+      // عناصر پایه
+      const slidesWrapper = document.getElementById('slidesWrapper');
+      const slides = Array.from(slidesWrapper.children);
+      const dotsContainer = document.getElementById('dots');
+      const prevBtn = document.getElementById('prevSlide');
+      const nextBtn = document.getElementById('nextSlide');
+      const slideCount = slides.length;
+      let currentIndex = 0;
+      const AUTO_INTERVAL = 4000; // 4 seconds
+      let autoTimer = null;
+      let isAnimating = false;
+
+      // ایجاد دات‌ها (نقاط ناوبری) و اتریبیوت‌ها
+      slides.forEach((s,i)=>{
+        const dot = document.createElement('button');
+        dot.className = 'dot';
+        dot.setAttribute('role','tab');
+        dot.setAttribute('aria-label','اسلاید '+(i+1));
+        dot.setAttribute('aria-controls','slide-'+(i+1));
+        dot.addEventListener('click', ()=> goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+      const dots = Array.from(dotsContainer.children);
+
+      // تنظیمات اولیه ARIA روی اسلایدها
+      slides.forEach((s,i)=> {
+        s.id = 'slide-'+(i+1);
+        s.setAttribute('aria-hidden', i===currentIndex ? 'false' : 'true');
+      });
+
+      // تابع برای رندر موقعیت اسلایدها (rtl slide direction)
+      function render(){
+  const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+  const offset = isRTL ? currentIndex * 100 : -currentIndex * 100;
+  slidesWrapper.style.transform = 'translateX(' + offset + '%)';
+  slides.forEach((s,i)=> s.setAttribute('aria-hidden', i===currentIndex ? 'false' : 'true'));
+  dots.forEach((d,i)=> d.classList.toggle('active', i===currentIndex));
+}
+
+      // navigation functions
+      function goTo(index){
+        if(isAnimating) return;
+        isAnimating = true;
+        currentIndex = ((index % slideCount) + slideCount) % slideCount;
+        render();
+        window.setTimeout(()=> { isAnimating=false; }, 900);
+        restartAuto();
+      }
+      function next(){ goTo(currentIndex+1) }
+      function prev(){ goTo(currentIndex-1) }
+
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      // autoplay
+      function startAuto(){
+        stopAuto();
+        if (document.hasFocus()) autoTimer = setInterval(next, AUTO_INTERVAL);
+      }
+      function stopAuto(){
+        if(autoTimer) clearInterval(autoTimer);
+        autoTimer = null;
+      }
+      function restartAuto(){ startAuto(); }
+
+      // start
+      render();
+      startAuto();
+
+      // stop on interaction (hover on desktop)
+      slidesWrapper.addEventListener('mouseenter', stopAuto);
+      slidesWrapper.addEventListener('mouseleave', startAuto);
+
+      // smooth scroll for internal "اطلاعات بیشتر" buttons
+      document.querySelectorAll('[data-scroll]').forEach(btn=>{
+        btn.addEventListener('click', e=>{
+          const target = document.querySelector(btn.getAttribute('data-scroll'));
+          if(target){
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            // focus for accessibility
+            target.setAttribute('tabindex','-1');
+            target.focus({preventScroll:true});
+          }
+        });
+      });
+
+      // Intro animation for section three when it enters viewport
+      const introEl = document.querySelector('.intro-anim');
+      if(introEl){
+        const obs = new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              entry.target.classList.add('visible');
+              obs.disconnect();
+            }
+          });
+        }, {threshold:0.18});
+        obs.observe(introEl);
+      }
+
+      // ACCORDION logic (accessible)
+      const accHeaders = document.querySelectorAll('.acc-header');
+      accHeaders.forEach(header=>{
+        const controlsId = header.getAttribute('aria-controls');
+        const panel = document.getElementById(controlsId);
+        header.addEventListener('click', ()=> toggleAccordion(header,panel));
+        header.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' '){
+            e.preventDefault(); toggleAccordion(header,panel);
+          }
+        });
+      });
+      function toggleAccordion(header,panel){
+        const expanded = header.getAttribute('aria-expanded') === 'true';
+        // close any open if you want single-open behavior
+        accHeaders.forEach(h=>{
+          const id = h.getAttribute('aria-controls');
+          const p = document.getElementById(id);
+          if(h !== header){
+            h.setAttribute('aria-expanded','false');
+            p.classList.remove('open');
+          }
+        });
+        if(expanded){
+          header.setAttribute('aria-expanded','false');
+          panel.classList.remove('open');
+        } else {
+          header.setAttribute('aria-expanded','true');
+          panel.classList.add('open');
+        }
+      }
+
+      // BACK TO TOP mobile behavior: show when scrolled more than 1/5 of viewport height
+      const backBtn = document.getElementById('backToTop');
+      function checkBackToTop(){
+        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+        const threshold = vh * 0.2;
+        if(window.scrollY > threshold && window.innerWidth < 768){
+          backBtn.classList.add('show');
+        } else {
+          backBtn.classList.remove('show');
+        }
+      }
+      window.addEventListener('scroll', checkBackToTop, {passive:true});
+      window.addEventListener('resize', checkBackToTop);
+      function scrollToTop(){
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+
+      // optional: keyboard accessibility for slide arrows
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'ArrowLeft') prev();
+        if(e.key === 'ArrowRight') next();
+      });
+
+      // ensure initial check
+      checkBackToTop();
+
+      // Make header nav appear for small screens (mobile menu placeholder behavior)
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      function handleResponsiveNav(){
+        if(window.innerWidth < 768){
+          mobileMenuBtn.style.display = 'inline-block';
+        } else {
+          mobileMenuBtn.style.display = 'none';
+        }
+      }
+      window.addEventListener('resize', handleResponsiveNav);
+      handleResponsiveNav();
+
+      // Mobile Menu click shows simple overlay (placeholder editable later)
+      mobileMenuBtn && mobileMenuBtn.addEventListener('click', ()=>{
+        alert('منوی موبایل (قابلیت ویرایش بعدی)');
+      });
+
+      // Improve focus outlines for keyboard users
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Tab') document.documentElement.classList.add('show-focus');
+      });
+    })();
+  </script>
+</body>
+</html>
