@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Business Card</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: #f5f7fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 900px;
+        background: #000e29;
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    /* Desktop Layout */
+    @media(min-width: 768px) {
+        .container {
+            flex-direction: row-reverse;
+            height: 500px;
+        }
+        .image-box, .text-box {
+            width: 50%;
+            height: 100%;
+        }
+    }
+
+    .image-box {
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .text-box {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+    }
+
+    .name, .role, .contact {
+        opacity: 0;
+        transition: opacity 1s ease;
+        font-family:"B nazanin"
+    }
+
+    .name {
+        font-size: 88px;
+        font-weight: bold;
+        color: #f5f7fa;
+        margin-bottom: 0px;
+        margin-top: -50px;
+        font-family:"irannastaliq"
+        
+    }
+
+    .role {
+        font-size: 35px;
+        font-weight: bold;
+        color: #f5f7fa;
+        margin-bottom: 10px;
+        margin-top: -15px;
+    }
+
+    .contact a {
+        display: block;
+        margin-bottom: 10px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #111;
+        font-weight: bold;
+        background: #c4c4c4;
+        padding: 10px 15px;
+        border-radius: 12px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .contact a:hover {
+        background: #c4c4c444;
+    }
+</style>
+
+<script>
+window.onload = () => {
+    setTimeout(() => {
+        document.querySelector(".name").style.opacity = 1;
+
+        setTimeout(() => {
+            document.querySelector(".role").style.opacity = 1;
+
+            setTimeout(() => {
+                document.querySelector(".contact").style.opacity = 1;
+            }, 1000);
+
+        }, 1000);
+
+    }, 1000);
+};
+</script>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="image-box">
+        <img src="photo.jpg" alt="Photo">
+    </div>
+
+    <div class="text-box">
+        <div class="name">مهندس حمید ریاضی</div>
+        <div class="role">مدیر عامل</div>
+
+        <div class="contact">
+            <a href="tel:+989991210107">شماره تماس</a>
+            <a href="mailto:metanosense@gmail.com">ایمیل</a>
+            <a href="https://metanosens.github.io/pre-website/website/index.html">وب سایت متانوسنس</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
